@@ -1,0 +1,30 @@
+.front{
+    display: block;
+    border-radius: 25px;
+    border-top-right-radius: 55px;
+    background-color: #D4EdF7;
+    border: 1px solid blue;
+    width: 40%;
+    margin: 10px auto;
+    position: relative;
+    top: 120px;
+    text-align: center;
+    padding: 10px 2px;
+    font-size: 22px;
+}
+.back{
+    display:none;
+}
+#player3, #player4, .play1, .play2, .play3{
+    display: none;
+}
+.front> h2{
+    font-family:cursive;
+    
+}
+input[type="text"]{
+    margin-bottom: 3px;
+}
+#play{
+    padding: 8px;
+}
