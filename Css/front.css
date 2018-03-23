@@ -1,16 +1,18 @@
-.front{
+.front {
     display: block;
-    border-radius: 25px;
-    border-top-right-radius: 55px;
-    background-color: #D4EdF7;
-    border: 1px solid blue;
+    background-color: rgba(117, 75, 50, 0.75);
     width: 40%;
-    margin: 10px auto;
     position: relative;
-    top: 120px;
+    top: -48px;
     text-align: center;
-    padding: 10px 2px;
     font-size: 22px;
+    border-radius: 25px 55px 25px 25px;
+    border-width: 1px;
+    border-style: solid;
+    border-color: blue;
+    border-image: initial;
+    margin: 10px auto;
+    padding: 10px 2px;
 }
 .back{
     display:none;

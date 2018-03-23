@@ -1,4 +1,33 @@
 var number_of_players = 1;
+var computer = false;
+var player_selected = false;
+
+function hide_front()
+            {
+                $("#top-img").hide();
+                $(".front").hide();
+                $(".back").show();
+                $("#game").css("display", "inline-block");
+                $("#info").css("display", "inline-block");
+            }
+function Value_Checker(no)
+{
+    var count = 0;
+    var ply= "input[name=ply"+no+"]";
+    if($(ply).val() == "")
+    {
+        count++;
+        alert("Enter proper values");
+    }
+    else
+    {
+        var index= "#player"+no;
+        var player="player"+no;
+        $(index).html($(ply).val());
+        $(index).css("color", eval(player).color);
+    }
+    return count;
+}
 
 $("input[type='radio']").click(function(){
     var i, x;
@@ -6,10 +35,19 @@ $("input[type='radio']").click(function(){
         {
             if(document.getElementsByName("num_of_ply")[i].checked)
                 {
+                    player_selected = true;
                     break;
                 }
         }
     number_of_players = i+1;
+    if(i == 0)
+    {
+        computer = true;
+        number_of_players = 2;
+    }
+    else{
+        computer = false;
+    }
     switch(i)
         {
             case 0:
@@ -57,34 +95,36 @@ $("input[type='radio']").click(function(){
         }
     
     
-})
+});
 $("#play").click(function(){
-    var counter=0;
-    for(i=1; i<=number_of_players; i++)
+    
+    if(player_selected )
         {
-            var ply= "input[name=ply"+i+"]";
-            if($(ply).val() == "")
+            if(!computer)
             {
-                counter++;
-                alert("Enter proper values");
+                
+                for(i=1; i<=number_of_players; i++)
+                    {
+                        var count = 0;
+                        count+= Value_Checker(i);
+                        
+                    }
+                if(!count)
+                    hide_front();
+                            
+        
+                
+                
             }
-            else
-                {
-                    var index= "#player"+i;
-                    var player="player"+i;
-                    $(index).html($(ply).val());
-                    $(index).css("color", eval(player).color);
+            else{
+                if(!Value_Checker(1))
+                    hide_front();
+                
+            }
                     
-                    
-                }
                 
         }
-    if(counter == 0)
-        {
-            $(".front").hide();
-            $(".back").show();
-            $("#game").css("display", "inline-block");
-            $("#info").css("display", "inline-block");
-        }
-    
-})
+    else
+        alert("click on a radio button and select players");
+
+});

@@ -76,6 +76,7 @@ $(document).ready(function(){
         ctx.fillStyle = player.color;
         ctx.fill();
     }
+
 function clear(id){
     ctx.beginPath();
     var player=getplayer(id);
@@ -108,11 +109,13 @@ function clear(id){
         var i;
         for(i=1; i<=dice; i++)
         {
+            //To check if player is in the upper row
             if(player.row == 10)
             {
                 if((player.posx - (dice*60) )<30)
                     break;
             }
+            
             var con=player.row % 2 ;
             if(con == 0)
             {

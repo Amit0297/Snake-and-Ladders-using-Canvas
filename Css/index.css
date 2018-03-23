@@ -1,17 +1,34 @@
+body{
+    background-color: rgba(171, 171, 219, 0.3);
+    overflow-y: hidden;
+}
+
+
+#top-img {
+    width: 100%;
+    height: 45vh;
+    margin: 0px;
+    padding: 0px;
+}
 #game{
     padding: 3px 8px;
     height: 100vh;
-    border: 1px solid green;
 }
-#info{
-    border: 1px solid black;
+#info {
+    background-color: rgba(201, 201, 203, 0.5);
+    box-shadow: rgba(0, 0, 0, 0.5) 10px 12px;
     height: 300px;
-    width: 400px;
+    width: 300px;
     position: relative;
-    top:-200px;
-    left:120px;
-    padding: 10px;
+    top: -200px;
+    left: 120px;
     text-align: center;
+    border-width: 1px;
+    border-style: solid;
+    border-color: black;
+    border-image: initial;
+    border-radius: 20px 30px 20px 20px;
+    padding: 10px;
 }
 #player1, #player2, #player3, #player4{
     display: block;
