@@ -37,180 +37,116 @@ $(document).ready(function(){
                     ctx.fillText(num, x_iterator*(i), y_iterator*(j+1));
                     
                 }
-            
-            
         }
     player_visiblity(counter);
+
+   // Dice move             
      $("#dice").click(function(){
-         alert(number_of_players);
         $(this).attr("src", "Images/dice_show/face0.gif");
         var dice =roll();
         setTimeout(function(){
             var res=loc+dice+".png";
             $("#dice").attr("src",res);
             }, 2000);
-        move(dice,counter);
-        if(counter<=number_of_players)
-            {
-                if(placeval)
-                    player_visiblity(counter);
-                
-                counter++;
-            }
-         if(counter>number_of_players)
+        setTimeout(function(){move(dice,counter)}, 2200);
+         if(dice!=6)
              {
-                 counter = 1;
-                 placeval=false;
-             }
+                 if(counter<=number_of_players)
+                 {
+                     if(placeval)
+                         player_visiblity(counter);
+                     counter++;
+                 }
+                 if(counter>number_of_players)
+                 {
+                     counter = 1;
+                     placeval=false;
+                 }
+                }
+        
         });
-})
+});
+
 
     function player_visiblity(id)
     {
-         ctx.beginPath();
-                var pno="player"+id;
-                var player=eval(pno);
-                ctx.arc(player.posx, player.posy, 10, 0, 2*Math.PI);
-                ctx.fillStyle = player.color;
-                ctx.fill();
-
+        ctx.beginPath();
+        var player=getplayer(id);
+        ctx.arc(player.posx, player.posy, 10, 0, 2*Math.PI);
+        ctx.fillStyle = player.color;
+        ctx.fill();
     }
 function clear(id){
     ctx.beginPath();
-    var pno="player"+id;
-    var player=eval(pno);
+    var player=getplayer(id);
     ctx.arc(player.posx, player.posy, 11, 0, 2*Math.PI);
     ctx.fillStyle = '#F8CE8C';
     ctx.fill();
 }
     
-function snake_pos(id)
-{
-    var pno="player"+id;
-    var player=eval(pno);
-    if((player.posx == snake.p1[0])&&(player.posy == snake.p1[1]))
-        {
-            player.posx = snake.e1[0];
-            player.posy = snake.e1[1];
-        }
-    if((player.posx == snake.p2[0]) && (player.posy == snake.p2[1]))
-        {
-            player.posx = snake.e2[0];
-            player.posy = snake.e2[1];
-            
-        }
-    if((player.posx == snake.p3[0]) && (player.posy == snake.p3[1]))
-        {
-            player.posx = snake.e3[0];
-            player.posy = snake.e3[1];
-            
-        }
-    if((player.posx == snake.p4[0]) && (player.posy == snake.p4[1]))
-        {
-            player.posx = snake.e4[0];
-            player.posy = snake.e4[1];
-            
-        }
-    
-}
-function ladder_pos(id)
-{
-    var pno="player"+id;
-    var player=eval(pno);
-    if((player.posx == ladder.p1[0])&&(player.posy == ladder.p1[1]))
-        {
-            player.posx = ladder.e1[0];
-            player.posy = ladder.e1[1];
-        }
-    if((player.posx == ladder.p2[0]) && (player.posy == ladder.p2[1]))
-        {
-            player.posx = ladder.e2[0];
-            player.posy = ladder.e2[1];
-            
-        }
-    if((player.posx == ladder.p3[0]) && (player.posy == ladder.p3[1]))
-        {
-            player.posx = ladder.e3[0];
-            player.posy = ladder.e3[1];
-            
-        }
-    if((player.posx == ladder.p4[0]) && (player.posy == ladder.p4[1]))
-        {
-            player.posx = ladder.e4[0];
-            player.posy = ladder.e4[1];
-            
-        }
-    
-}
 
+
+    function getplayer(id)
+    {
+        var pno="player"+id;
+        var player=eval(pno);
+        return player;
+    }
+
+
+    // To roll the dice
     function roll()
     {
         var dice = Math.floor(Math.random()*6+1);
         return dice;
     }
+    
      function move(dice, id)
     {
-        var pno="player"+id;
-        var player=eval(pno);
-        alert(player);
+        var player=getplayer(id);
         clear(counter);
         var i;
-        alert(dice);
         for(i=1; i<=dice; i++)
         {
+            if(player.row == 10)
+            {
+                if((player.posx - (dice*60) )<30)
+                    break;
+            }
             var con=player.row % 2 ;
-        alert('pos'+con);
             if(con == 0)
             {
-                alert('inside');
                 if(player.posx>0)
+                {
+                    player.posx-= 60;
+                    if(player.posx<0)
                     {
-                        player.posx-= 60;
-                        
-                        alert('po'+player.posx);
-                        if(player.posx<0)
-                            {
-                                 player.posx+=60;
-                                player.posy-=60;
-                                player.row++;
-                                alert(player.posx);
-                                alert(player.posy);
-                                alert(player.row);
-                                
-                            }
-            
-                    
+                        player.posx+=60;
+                        player.posy-=60;
+                        player.row++;
                     }
+                }
             }
-        else{
-            if(player.posx<600)
+            else{
+                if(player.posx<600)
                 {
                     player.posx+=60;
-                    alert(player.posx);
                     if(player.posx>600)
                     {
                         player.posx-=60;
                         player.posy-=60;
                         player.row++;
-                        alert(player.posx);
-                        alert(player.posy);
-                        alert(player.row);
-                    
                     }
                 }
-            
-            
-        }
+            }
             
         }
-        snake_pos(1);
-        ladder_pos(1);
+        snake_pos(counter);
+        ladder_pos(counter);
         ctx.beginPath();
         ctx.arc(player.posx, player.posy, 10, 0, 2*Math.PI);
         ctx.fillStyle = player.color;
         ctx.fill();
-        
-        
-     
     }
-        
+     
+    
