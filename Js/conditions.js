@@ -1,8 +1,7 @@
 //To check snake condition
 function snake_pos(id)
 {
-    var pno="player"+id;
-    var player=eval(pno);
+    var player= getplayer(id);
     if((player.posx == snake.p1[0])&&(player.posy == snake.p1[1]))
         {
             player.posx = snake.e1[0];
@@ -31,8 +30,7 @@ function snake_pos(id)
 //To check Ladder Condition
 function ladder_pos(id)
 {
-    var pno="player"+id;
-    var player=eval(pno);
+    var player = getplayer(id);
     if((player.posx == ladder.p1[0])&&(player.posy == ladder.p1[1]))
         {
             player.posx = ladder.e1[0];
@@ -63,5 +61,5 @@ function win(id){
     
     var player=getplayer(id);
     if((player.posx == 30)&&(player.posy == 25))
-        alert(pno+ "won");
+        alert(player+ "won");
     }

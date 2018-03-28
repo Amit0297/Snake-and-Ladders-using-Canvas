@@ -56,6 +56,7 @@ $("input[type='radio']").click(function(){
                     $(".play2").hide();
                     $(".play3").hide();
                     $("#player2").html("My Computer");
+                    $("#player2").css("color", player2.color);
                     $("#player3").hide();
                     $("#player4").hide();
                     break;
