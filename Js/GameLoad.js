@@ -11,7 +11,7 @@ var counter=1;
 var ctx;
 var placeval =true;
 var board_color="#F8CE8C";
-
+var clickable = true;
 // Begining
 $(document).ready(function(){
     var canvas = document.getElementById("main");
@@ -43,66 +43,61 @@ $(document).ready(function(){
     player_visiblity(counter);
 
    // Dice move             
-     $("#dice").click(function(){
-         $(this).attr("src", "Images/dice_show/face0.gif");
+     $("#dice").click(function(){movement()});
+});
+function switch_player(dice){
+if(dice!=6)
+{
+    if(counter<=number_of_players)
+    {counter++;
+    }
+    
+    if(counter>number_of_players)
+    {
+        counter = 1;
+        placeval=false;
+    }
+    
+    if(placeval)
+        player_visiblity(counter);
+    
+    if((computer)&&(counter == 2))
+    {
+        setTimeout(function(){movement()}, 2800);
+    }
+    }
+    clickable = true;
+}
+
+function movement(){
+    if(clickable)
+    {
+        clickable = false;
+        $("#dice").attr("src", "Images/dice_show/face0.gif");
         var dice =roll();
         setTimeout(function(){
             var res=loc+dice+".png";
             $("#dice").attr("src", res);
-            }, 2000);
+        }, 2000);
         setTimeout(function(){move(dice,counter)}, 2200);
-            
-});
-});
-function switch_player(dice){
-               if(dice!=6)
-             {
-                 if(computer)
-                     {
-                      
-                         setTimeout(function(){move(dice,counter+1)}, 3200);
-                         
-                     }
-                 else{
-                     if(counter<=number_of_players)
-                     {
-                         counter++;
-                     }
-                     if(counter>number_of_players)
-                     {
-                         counter = 1;
-                         placeval=false;
-                     }
-                     if(placeval)
-                             player_visiblity(counter);
-                     
-                 }
-                 
-                }
-        }
+    }
+}
 
 function color_picker(){
     var col = ply_color[Math.floor(Math.random()*6)];
-    
     var pos = ply_color.indexOf(col);
     var rem = ply_color.slice(pos, 1);
     return col;
-
 }
 
-
-
-
-
-
-    function player_visiblity(id)
-    {
-        ctx.beginPath();
-        var player=getplayer(id);
-        ctx.arc(player.posx, player.posy, 10, 0, 2*Math.PI);
-        ctx.fillStyle = player.color;
-        ctx.fill();
-    }
+function player_visiblity(id)
+{
+    ctx.beginPath();
+    var player=getplayer(id);
+    ctx.arc(player.posx, player.posy, 10, 0, 2*Math.PI);
+    ctx.fillStyle = player.color;
+    ctx.fill();
+}
 
 function clear(id){
     ctx.beginPath();
@@ -111,75 +106,68 @@ function clear(id){
     ctx.fillStyle = '#F8CE8C';
     ctx.fill();
 }
-    
+function getplayer(id)
+{
+    var pno="player"+id;
+    var player=eval(pno);
+    return player;
+}
 
 
-    function getplayer(id)
+// To roll the dice
+function roll()
+{
+    var dice = Math.floor(Math.random()*6+1);
+    return dice;
+}
+
+function move(dice, id)
+{
+    var player=getplayer(id);
+    clear(id);
+    var i;
+    for(i=1; i<=dice; i++)
     {
-        var pno="player"+id;
-        var player=eval(pno);
-        return player;
-    }
-
-
-    // To roll the dice
-    function roll()
-    {
-        var dice = Math.floor(Math.random()*6+1);
-        return dice;
-    }
-    
-     function move(dice, id)
-    {
-        var player=getplayer(id);
-        clear(id);
-        var i;
-        alert('player' + id);
-        for(i=1; i<=dice; i++)
+        //To check if player is in the upper row
+        if(player.row == 10)
         {
-            //To check if player is in the upper row
-            if(player.row == 10)
+            if((player.posx - (dice*60) )<30)
+                break;
+        }
+        var con=player.row % 2 ;
+        if(con == 0)
+        {
+            if(player.posx>0)
             {
-                if((player.posx - (dice*60) )<30)
-                    break;
-            }
-            
-            var con=player.row % 2 ;
-            if(con == 0)
-            {
-                if(player.posx>0)
-                {
-                    player.posx-= 60;
-                    if(player.posx<0)
-                    {
-                        player.posx+=60;
-                        player.posy-=60;
-                        player.row++;
-                    }
-                }
-            }
-            else{
-                if(player.posx<600)
+                player.posx-= 60;
+                if(player.posx<0)
                 {
                     player.posx+=60;
-                    alert(player.posx);
-                    if(player.posx>600)
-                    {
-                        player.posx-=60;
-                        player.posy-=60;
-                        player.row++;
-                    }
+                    player.posy-=60;
+                    player.row++;
                 }
             }
-            
         }
-        snake_pos(id);
-        ladder_pos(id);
-        ctx.beginPath();
-        ctx.arc(player.posx, player.posy, 10, 0, 2*Math.PI);
-        ctx.fillStyle = player.color;
-        ctx.fill();
-        switch_player(dice);
+        else{
+            if(player.posx<600)
+            {
+                player.posx+=60;
+                if(player.posx>600)
+                {
+                    player.posx-=60;
+                    player.posy-=60;
+                    player.row++;
+                }
+            }
+            }
     }
+    snake_pos(id);
+    ladder_pos(id);
+    ctx.beginPath();
+    ctx.arc(player.posx, player.posy, 10, 0, 2*Math.PI);
+    ctx.fillStyle = player.color;
+    ctx.fill();
+    switch_player(dice);
+}
      
     
